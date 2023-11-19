@@ -8,8 +8,8 @@ const result = document.getElementById("result");
 const resetButton = document.getElementById("resetButton");
 
 tapButton.addEventListener("click", () => {
-  clearInterval(resetTimer); // Clear the reset timer on button click
-  resetTimer = resetCounter(); // Reset timer starts again on click
+  clearInterval(resetTimer); // Clear the resset timer on button click
+  resetTimer = resetCounter(); // Reset timer starts again
 
   const now = Date.now();
   if (lastTapTime !== 0) {
