@@ -6,24 +6,26 @@ let resetTimer;
 const tapButton = document.getElementById("tapButton");
 const result = document.getElementById("result");
 const resetButton = document.getElementById("resetButton");
+const container = document.querySelector(".container");
 
 tapButton.addEventListener("click", () => {
-  clearInterval(resetTimer); // Clear the resset timer on button click
-  resetTimer = resetCounter(); // Reset timer starts again
+  clearInterval(resetTimer);
+  resetTimer = resetCounter();
 
   const now = Date.now();
   if (lastTapTime !== 0) {
     const timeElapsed = now - lastTapTime;
     taps.push(timeElapsed);
     tapsCount++;
-    if (tapsCount >= 2) {
-      const bpm = calculateBPM();
+    if (tapsCount >= 4) {
+      const lastFourTaps = taps.slice(-4);
+      const bpm = calculateBPM(lastFourTaps);
       result.textContent = `${bpm.toFixed(2)}`;
     }
   }
   lastTapTime = now;
 
-  changeBackgroundColor();
+  changeBorderColor();
 });
 
 resetButton.addEventListener("click", () => {
@@ -33,20 +35,21 @@ resetButton.addEventListener("click", () => {
   result.textContent = "";
 });
 
-function calculateBPM() {
+function calculateBPM(lastFourTaps) {
   const averageTime =
-    taps.reduce((acc, tap) => acc + tap, 0) / taps.length || 1;
+    lastFourTaps.reduce((acc, tap) => acc + tap, 0) / lastFourTaps.length || 1;
   const averageTimeInSeconds = averageTime / 1000;
   const bpm = 60 / averageTimeInSeconds;
   return bpm;
 }
 
-function changeBackgroundColor() {
+function changeBorderColor() {
   const red = Math.floor(Math.random() * 256);
   const green = Math.floor(Math.random() * 256);
   const blue = Math.floor(Math.random() * 256);
 
-  document.body.style.backgroundColor = `rgb(${red},${green},${blue})`;
+  //   container.style.borderColor = `rgb(${red},${green},${blue})`;
+  container.style.boxShadow = `0px 0px 1000px rgba(${red},${green},${blue})`;
 }
 
 function resetCounter() {
